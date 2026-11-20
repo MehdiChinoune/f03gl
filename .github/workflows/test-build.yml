@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [gnu-15, gnu-16, intel] #, nvidia]
+        compiler: [gnu-15, gnu-16, intel, flang-23] #, nvidia]
         build_type: [Debug, Release] #, Fast]
 
     steps:
@@ -58,6 +58,13 @@ jobs:
             echo "FC=nvfortran" >> $GITHUB_ENV
             echo "CC=nvc" >> $GITHUB_ENV
             echo "LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/${NV_VERSION}/compilers/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/${NV_VERSION}/math_libs/lib64" >> $GITHUB_ENV
+          elif [[ ${{ matrix.compiler }} == flang-* ]]; then
+            wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
+            echo 'deb http://apt.llvm.org/resolute/ llvm-toolchain-resolute-23 main' | sudo tee /etc/apt/sources.list.d/LLVM.list
+            sudo apt-get update
+            sudo apt install --no-install-recommends -y flang-23 clang-23
+            echo "FC=flang-23" >> $GITHUB_ENV
+            echo "CC=clang-23" >> $GITHUB_ENV
           fi
           sudo apt install --no-install-recommends -y libgl-dev freeglut3-dev ninja-build
 
