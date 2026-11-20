@@ -110,7 +110,7 @@ MODULE OpenGL_glut
   !  GLUT API macro definitions -- fonts definitions
   !
   !  Steve Baker suggested to make it binary compatible with GLUT:
-  !  /*
+  !
   !  I don't really know if it's a good idea... But here it goes:
 
   !  Those pointers will be used by following definitions:
